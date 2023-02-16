@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+<_locDefinition xmlns="urn:locstudio">
+    <_locDefault _loc="locNone" />
+    <_locTag _loc="locData">Title</_locTag>
+    <_locTag _loc="locData">Description</_locTag>
+    <_locTag _loc="locData">Author</_locTag>
+    <_locTag _loc="locData">ToolTip</_locTag>
+</_locDefinition>
+	<CodeSnippet Format="1.0.0">
+	<Header>
+	<Title>SPProvenance</Title>
+        <Shortcut></Shortcut>
+	<Description>Find the code for the Stored Procedures</Description>
+	<Author>Jared Marx</Author>
+	<SnippetTypes>
+		<SnippetType>Expansion</SnippetType>
+	</SnippetTypes>
+	</Header>
+	<Snippet>
+		<Declarations>
+			<Literal>
+				<ID>DatabaseName</ID>
+				<ToolTip>Name of the database</ToolTip>
+				<Default>Database_Name</Default>
+			</Literal>
+			<Literal>
+				<ID>ObjectName</ID>
+				<ToolTip>Name of the object to be found</ToolTip>
+				<Default>Object_Name</Default>
+			</Literal>
+		</Declarations>
+		<Code Language="SQL">
+			<![CDATA[USE $DatabaseName$;
+GO
+
+DECLARE
+ @ObjectName			VARCHAR(50) = '%$ObjectName$%';
+
+
+SELECT
+ [Schema Name] =
+	ObjectSchema.name
+,Objects.name
+,Objects.type_desc
+,Objects.create_date
+,Objects.modify_date
+,Modules.[definition]
+FROM
+[sys].[objects] AS Objects
+	
+	LEFT JOIN sys.schemas AS ObjectSchema
+		ON ObjectSchema.schema_id = Objects.schema_id
+
+	LEFT JOIN sys.sql_modules AS Modules
+		ON Objects.object_id = Modules.object_id
+
+WHERE
+Objects.type_desc NOT IN ( 'SQL_SCALAR_FUNCTION' )
+AND
+Objects.name LIKE @ObjectName
+--AND
+--Modules.definition IS  NOT NULL$end$]]>
+		</Code>
+	</Snippet>
+	</CodeSnippet>
+</CodeSnippets>

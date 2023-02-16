@@ -1,0 +1,90 @@
+USE [HCI]
+GO
+
+/****** Object:  UserDefinedFunction [SUPPORT].[fn_FIND_GENERIC_NAMES]    Script Date: 1/19/2021 7:40:45 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+CREATE FUNCTION [SUPPORT].[fn_FIND_GENERIC_NAMES](
+ @BRAND_NAME		VARCHAR(255)	= NULL
+)
+RETURNS @Output TABLE(
+ [Generic Name]		VARCHAR(MAX)
+ )
+
+AS BEGIN
+
+DECLARE
+ @Like VARCHAR(1)	= '%'
+,@LikeName	VARCHAR(255);
+
+DECLARE @Temp TABLE (
+ [Generic Name]	VARCHAR(MAX)
+)
+
+SET @LikeName = @Like + @BRAND_NAME + @Like;
+
+INSERT INTO @Temp
+SELECT
+ [Generic Name] =
+	GENERIC_NAME
+FROM
+[WEA_EDW].[DIM].[NDC_CODE_MI_DIM]
+WHERE
+GENERIC_NAME LIKE @LikeName
+OR
+[PRODUCT_SERVICE_NAME] LIKE @LikeName
+GROUP BY
+GENERIC_NAME
+
+
+INSERT INTO @Temp
+SELECT
+ [Generic Name] =
+	[SERVICE_LONG_DESCRIPTION]
+FROM
+[WEA_EDW].[DIM].[SERVICE_DIM]
+WHERE
+(
+[SERVICE_LONG_DESCRIPTION] LIKE @LikeName
+OR
+[SERVICE_SHORT_DESCRIPTION] LIKE @LikeName
+)
+AND
+SERVICE_TYPE_NAME NOT IN ( 'UB Revenue Code' )
+GROUP BY
+[SERVICE_LONG_DESCRIPTION];
+
+
+INSERT INTO @Output
+SELECT
+[Generic Name]
+FROM
+@Temp
+GROUP BY
+[Generic Name]
+
+
+RETURN
+
+/**************************************************************************************************************/
+/* EXAMPLE CALLING OF FUNCTION */
+
+/*
+
+SELECT
+[Generic Name]
+FROM
+HCI.SUPPORT.[fn_FIND_GENERIC_NAMES] ( 'Capecitabine' );
+
+*/
+
+END;
+GO
+
+

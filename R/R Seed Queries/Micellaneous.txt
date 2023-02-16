@@ -1,0 +1,9 @@
+1) R markdown on VDI's doesn't work well...err well, it just doesn't work
+    - Issue encountered: 
+    - https://community.rstudio.com/t/cannot-knit-entirely-pandoc-error/52587/5
+    - https://github.com/rstudio/rmarkdown/issues/701
+    - Based on the above files it might not work to create render markdowns normally through a VDI.  
+        - Although, the second link does allude to the possibility of changing the intermediate and output directory to a temporary file location which will work; but would then need the file transfered to the network file share site.
+            - Example for Test_file.Rmd and intermediates_dir = "~/TempRMD" and output_dir = "~/TempRMD/doc
+    - An alternative solution may be to encorporate: https://milesmcbain.xyz/posts/hacking-r-library-paths/
+    

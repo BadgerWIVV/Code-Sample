@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+<_locDefinition xmlns="urn:locstudio">
+    <_locDefault _loc="locNone" />
+    <_locTag _loc="locData">Title</_locTag>
+    <_locTag _loc="locData">Description</_locTag>
+    <_locTag _loc="locData">Author</_locTag>
+    <_locTag _loc="locData">ToolTip</_locTag>
+</_locDefinition>
+	<CodeSnippet Format="1.0.0">
+	<Header>
+	<Title>InitialSQLComments</Title>
+        <Shortcut></Shortcut>
+	<Description>Create a starting preface for the SQL Code creation.</Description>
+	<Author>Jared Marx</Author>
+	<SnippetTypes>
+		<SnippetType>Expansion</SnippetType>
+	</SnippetTypes>
+	</Header>
+	<Snippet>
+		<Declarations>
+			<Literal>
+				<ID>Author</ID>
+				<ToolTip>Name of the author</ToolTip>
+				<Default>Jared Marx</Default>
+			</Literal>
+            <Literal>
+				<ID>Date</ID>
+				<ToolTip>Date originated</ToolTip>
+				<Default>Enter_Current_Date</Default>
+			</Literal>
+            <Literal>
+				<ID>Purpose</ID>
+				<ToolTip>Add Description of the SQL Purpose</ToolTip>
+				<Default>Enter_Purpose_Here</Default>
+			</Literal>
+		</Declarations>
+		<Code Language="SQL">
+			<![CDATA[/**************************************************************************************************************/
+/**************************************************************************************************************/
+/*
+Author: 		$Author$
+Date Created: 	$Date$
+
+Purpose: 
+$Purpose$
+
+Version History:
+
+V1	$Date$
+	1) Initial Creation
+
+*/
+/**************************************************************************************************************/
+/**************************************************************************************************************/$end$]]>
+		</Code>
+	</Snippet>
+	</CodeSnippet>
+</CodeSnippets>

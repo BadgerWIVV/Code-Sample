@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+<_locDefinition xmlns="urn:locstudio">
+    <_locDefault _loc="locNone" />
+    <_locTag _loc="locData">Title</_locTag>
+    <_locTag _loc="locData">Description</_locTag>
+    <_locTag _loc="locData">Author</_locTag>
+    <_locTag _loc="locData">ToolTip</_locTag>
+</_locDefinition>
+	<CodeSnippet Format="1.0.0">
+	<Header>
+	<Title>ColumnExploration</Title>
+        <Shortcut></Shortcut>
+	<Description>Find counts of a column given a tablename and columnname</Description>
+	<Author>Jared Marx</Author>
+	<SnippetTypes>
+		<SnippetType>Expansion</SnippetType>
+	</SnippetTypes>
+	</Header>
+	<Snippet>
+		<Declarations>
+			<Literal>
+				<ID>TableName</ID>
+				<ToolTip>Name of the table</ToolTip>
+				<Default>Table_Name</Default>
+			</Literal>
+            <Literal>
+				<ID>DatabaseName</ID>
+				<ToolTip>Name of the database</ToolTip>
+				<Default>Database_Name</Default>
+			</Literal>
+            <Literal>
+				<ID>SchemaName</ID>
+				<ToolTip>Name of the schema</ToolTip>
+				<Default>Schema_Name</Default>
+			</Literal>
+            <Literal>
+				<ID>ColumnName</ID>
+				<ToolTip>Name of the column</ToolTip>
+				<Default>Column_Name</Default>
+			</Literal>
+		</Declarations>
+		<Code Language="SQL">
+			<![CDATA[DECLARE
+ @table VARCHAR(200) = '[$DatabaseName$].[$SchemaName$].[$TableName$]'
+,@field VARCHAR(100) = '[$ColumnName$]'
+
+
+
+;
+DECLARE @sqlCommand VARCHAR (2000 );
+
+SET @sqlCommand =
+CONCAT(
+'SELECT
+',@field,'
+
+,COUNT(*) AS ''Line Count''
+FROM '
+,@table,'
+--WHERE
+--ISNUMERIC( ',@field,' ) = 0
+--LEN(',@field,' ) &lt; 5
+--ISNUMERIC( SUBSTRING(', @field,', 2, LEN(',@field,' ) ) ) = 0
+
+GROUP BY
+',@field,'
+
+ORDER BY
+--',@field,'
+COUNT(*) DESC
+
+--SELECT
+-- SUM( ISNUMERIC( ',@field,' ) ) AS ''Number of Numeric Fields''
+--,SUM( ISDATE( ',@field,' ) ) AS ''Number of Date Fields''
+--,COUNT(*) AS ''Total Line Count''
+--FROM
+--',@table,''
+)
+
+EXEC( @sqlCommand );$end$]]>
+		</Code>
+	</Snippet>
+	</CodeSnippet>
+</CodeSnippets>

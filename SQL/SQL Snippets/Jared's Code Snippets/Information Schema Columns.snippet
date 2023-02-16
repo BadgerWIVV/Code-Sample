@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+<_locDefinition xmlns="urn:locstudio">
+    <_locDefault _loc="locNone" />
+    <_locTag _loc="locData">Title</_locTag>
+    <_locTag _loc="locData">Description</_locTag>
+    <_locTag _loc="locData">Author</_locTag>
+    <_locTag _loc="locData">ToolTip</_locTag>
+</_locDefinition>
+	<CodeSnippet Format="1.0.0">
+	<Header>
+	<Title>InformationSchemaColumns</Title>
+        <Shortcut></Shortcut>
+	<Description>Find the data from Information_Schema.Columns</Description>
+	<Author>Jared Marx</Author>
+	<SnippetTypes>
+		<SnippetType>Expansion</SnippetType>
+	</SnippetTypes>
+	</Header>
+	<Snippet>
+		<Declarations>
+			<Literal>
+				<ID>DatabaseName</ID>
+				<ToolTip>Name of the database</ToolTip>
+				<Default>WEA_EDW</Default>
+			</Literal>
+		</Declarations>
+		<Code Language="SQL">
+			<![CDATA[USE $DatabaseName$;
+GO
+
+SELECT
+*
+FROM
+INFORMATION_SCHEMA.COLUMNS
+WHERE
+1 = 1
+
+--AND TABLE_NAME = ''
+--AND TABLE_SCHEMA = ''
+--AND COLUMN_NAME = ''$end$]]>
+		</Code>
+	</Snippet>
+	</CodeSnippet>
+</CodeSnippets>

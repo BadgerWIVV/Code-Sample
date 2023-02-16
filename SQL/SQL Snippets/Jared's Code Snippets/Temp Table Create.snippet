@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+<_locDefinition xmlns="urn:locstudio">
+    <_locDefault _loc="locNone" />
+    <_locTag _loc="locData">Title</_locTag>
+    <_locTag _loc="locData">Description</_locTag>
+    <_locTag _loc="locData">Author</_locTag>
+    <_locTag _loc="locData">ToolTip</_locTag>
+</_locDefinition>
+	<CodeSnippet Format="1.0.0">
+	<Header>
+	<Title>TempTableCreate</Title>
+        <Shortcut></Shortcut>
+	<Description>Create a code block that:
+1) Comments the purpose of the temp table
+2) DIEs the temp table
+3) Code area for the table
+4) Debug line for the temp table</Description>
+	<Author>Jared Marx</Author>
+	<SnippetTypes>
+		<SnippetType>Expansion</SnippetType>
+	</SnippetTypes>
+	</Header>
+	<Snippet>
+		<Declarations>
+			<Literal>
+				<ID>TempTableName</ID>
+				<ToolTip>Name of the table</ToolTip>
+				<Default>Table_Name</Default>
+			</Literal>
+            <Literal>
+				<ID>Comments</ID>
+				<ToolTip>Comments for the temp table</ToolTip>
+				<Default>Add_Comments_Here</Default>
+			</Literal>
+		</Declarations>
+		<Code Language="SQL">
+			<![CDATA[/**************************************************************************************************************/
+/* $Comments$ */
+
+IF OBJECT_ID( 'TEMPDB.DBO.#$TempTableName$' ) IS NOT NULL 
+	BEGIN
+		DROP TABLE #$TempTableName$
+	END;
+
+SELECT
+*
+INTO
+#$TempTableName$
+FROM
+
+
+/* FOR DEBUGGING */ --SELECT TOP 100 * FROM #$TempTableName$$end$]]>
+		</Code>
+	</Snippet>
+	</CodeSnippet>
+</CodeSnippets>

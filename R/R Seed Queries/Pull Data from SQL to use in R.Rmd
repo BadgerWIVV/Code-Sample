@@ -1,0 +1,39 @@
+---
+title: "Score"
+output:
+ #html_notebook: default
+  pdf_document: default
+  html_document: default
+---
+
+```{r, setup, include=FALSE}
+library(DBI)
+
+EDScon <- DBI::dbConnect(odbc::odbc(),
+                      driver = "SQL Server",
+                      server = "SERVER",
+                      #database = "DATABASE",
+                      #port = 1234
+                      )
+
+
+
+```
+
+
+```{sql Get  Data, connection= EDScon, output.var = "Data"}
+
+SELECT
+ [Score]
+FROM
+DATABASE.SCHEMA.TABLE
+
+
+
+```
+
+```{r histogram}
+
+hist(Data$`Score`, main = "Histogram of Data", xlab = "Score", ylab = "Number" )
+
+```

@@ -1,0 +1,90 @@
+USE [HCI]
+GO
+
+/****** Object:  UserDefinedFunction [SUPPORT].[fn_FIND_BRAND_NAMES]    Script Date: 1/19/2021 7:41:45 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+CREATE FUNCTION [SUPPORT].[fn_FIND_BRAND_NAMES](
+ @GENERIC_NAME		VARCHAR(255)	= NULL
+)
+RETURNS @Output TABLE(
+ [Brand Name]		VARCHAR(MAX)
+ )
+
+AS BEGIN
+
+DECLARE
+ @Like VARCHAR(1)	= '%'
+,@LikeName	VARCHAR(255);
+
+DECLARE @Temp TABLE (
+ [Brand Name]	VARCHAR(MAX)
+)
+
+SET @LikeName = @Like + @GENERIC_NAME + @Like;
+
+INSERT INTO @Temp
+SELECT
+ [Brand Name] =
+	[PRODUCT_SERVICE_NAME]
+FROM
+[WEA_EDW].[DIM].[NDC_CODE_MI_DIM]
+WHERE
+GENERIC_NAME LIKE @LikeName
+OR
+[PRODUCT_SERVICE_NAME] LIKE @LikeName
+GROUP BY
+[PRODUCT_SERVICE_NAME]
+
+
+INSERT INTO @Temp
+SELECT
+ [Brand Name] =
+	[SERVICE_SHORT_DESCRIPTION]
+FROM
+[WEA_EDW].[DIM].[SERVICE_DIM]
+WHERE
+(
+[SERVICE_LONG_DESCRIPTION] LIKE @LikeName
+OR
+[SERVICE_SHORT_DESCRIPTION] LIKE @LikeName
+)
+AND
+SERVICE_TYPE_NAME NOT IN ( 'UB Revenue Code' )
+GROUP BY
+[SERVICE_SHORT_DESCRIPTION];
+
+
+INSERT INTO @Output
+SELECT
+[Brand Name]
+FROM
+@Temp
+GROUP BY
+[Brand Name]
+
+
+RETURN
+
+/**************************************************************************************************************/
+/* EXAMPLE CALLING OF FUNCTION */
+
+/*
+
+SELECT
+[Brand Name]
+FROM
+HCI.SUPPORT.[fn_FIND_BRAND_NAMES] ( 'Capecitabine' );
+
+*/
+
+END;
+GO
+
+
